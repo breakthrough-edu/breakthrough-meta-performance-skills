@@ -18,10 +18,12 @@ If a student has no vault, the setup stops and sends them to install one. It doe
 ## Install
 
 ```
-npx skills add <owner>/meta-performance-skills
+npx skills add -g breakthrough-edu/meta-performance-skills
 ```
 
-Each skill's `SKILL.md` must sit inside its own `<skill-name>/` subdirectory for `npx skills add` to find it, which is why the repo root holds two folders and this file rather than a `SKILL.md`.
+One command installs both. The `-g` installs them for your user; without it they land in whatever folder you happened to be standing in.
+
+Each skill's `SKILL.md` sits inside its own `<skill-name>/` subdirectory, which is what lets `npx skills add` find both of them, and why the repo root holds two folders and this file rather than a `SKILL.md`.
 
 **Both are manual-trigger only.** Neither fires on its own. The student asks for it by name.
 
