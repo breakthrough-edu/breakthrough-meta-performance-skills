@@ -79,7 +79,8 @@ A student's Base is a copy taken on the day they installed. `+base-copy` carries
 So:
 
 - The skills **detect the Base's shape at run time** rather than assuming a version.
-- ⛔ There is **no version-stamp system**, deliberately. A stamp is a claim about the Base, and it goes stale the moment someone edits by hand in the UI. Inspection cannot go stale.
+- ⛔ **Shape is decided by inspection, never by a label.** A claim about the Base's current shape goes stale the moment someone edits by hand in the UI. An inspection cannot, because it is looking at the thing itself.
+- **One stamp exists, and it answers a different question**: which day this copy was taken from the template. It is read only after an inspection has already found a difference, and only to tell an older copy apart from an altered one. The three clauses that keep it out of the shape decision are in `references/changing-the-base.md` §1.
 - Every legal change to a student's Base is written so that a later session can detect it as already-applied.
 
 The rules for that, and the measured Lark behaviour they are built on, are in `references/changing-the-base.md`.

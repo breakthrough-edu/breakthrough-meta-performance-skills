@@ -108,6 +108,8 @@ Three steps, at the first live Insights call:
 
 ⛔ **Whichever you pick, do not invent a fourth option in the session.** If none of these three works, the answer is the third one.
 
+⚠️ **The same ceiling sits on the workflow's other request, and this check does not look at it.** The sync also calls the ads endpoint for each ad's status, and that call takes a row limit the same way and follows no cursor either. ⇒ **An account big enough to paginate Insights is big enough to truncate that one too**, and the symptom is different enough to misread: the daily rows arrive complete, while some ads keep a stale status and a stale synced-at time. ⭐ **Apply the same three options to it**, and note that when the third option is the honest answer for Insights it is the honest answer for both.
+
 ⚠️ **Unverified: whether Lark's HTTP step can chase a `paging` cursor at all.** What is measured is that Lark's variable references are a fixed path tree derived from the sample response, with no concept of "the next one", which is why arrays cannot be indexed. Whether an HTTP step's URL can be built from a previous step's output was **never tested**. ⛔ Do not promise the student a cursor-following sync. What would settle it: one probe workflow whose HTTP step references a prior step's output in its URL, and whether it validates and runs. ⛔ **Never build that probe in a student's Base.** A workflow cannot be deleted through the CLI, so a probe left behind is permanent for them; this belongs in a throwaway Base owned by whoever maintains this package.
 
 ### Check 2: currency
@@ -154,15 +156,9 @@ Three steps, at the first live Insights call:
 
 ### The day gate, and the one thing it cannot do
 
-**The shape** (this is why a same-day re-run is safe):
+**The shape is drawn in full in [changing-the-base.md](changing-the-base.md) §5, and it is drawn there only.** ⛔ Do not restate it here. What you need at this gate is why it makes a same-day re-run safe, and what it costs.
 
-```
-Trigger -> FindRecord (does this batch's key already exist?) -> IfElse
-           |- if_true  -> do nothing, today is already loaded
-           |- if_false -> HTTPClient -> Loop -> AddRecord
-```
-
-**The branch sits OUTSIDE the Loop, and it has to.** Lark refuses to nest an if-else inside a loop, so the per-row "find it, update it or insert it" that everyone reaches for first is not buildable here. There is also no delete-record action, so "clear it and reload" is not available either. The gate outside the loop was measured working in both directions: with the key present the whole batch is skipped, and with the table emptied the same trigger writes its rows again.
+**The branch sits OUTSIDE the loop, and it has to.** Lark refuses to nest an if-else inside a loop, so the per-row branch that everyone reaches for first cannot be written. ⚠️ **That is a limit on the branch, not on upsert**: §5 has the route that does work, and it does not use a branch. There is also no delete-record action, so "clear it and reload" is not available either. The gate outside the loop was measured working in both directions: with the key present the whole batch is skipped, and with the table emptied the same trigger writes its rows again.
 
 **Without that gate, a plain add-record workflow repeats itself honestly.** Measured: the same workflow triggered three times, three rows each, left nine rows in the table, three copies of every key, **and the totals silently tripled with no error**.
 
@@ -170,7 +166,7 @@ Trigger -> FindRecord (does this batch's key already exist?) -> IfElse
 
 ⇒ **That limitation belongs in the student's known-limitations list**, so that a future session does not spend an afternoon debugging a difference that is working as designed. File it per [references/vault-note.md](vault-note.md).
 
-⚠️ **I could not verify whether the template's own workflow carries this gate.** Read the workflow's steps before you run anything and answer one question: **is there a FindRecord step with an IfElse branch outside the Loop?**
+⚠️ **A student's copy is whatever day it was taken, so read this copy's workflow before you run anything** rather than assuming what the current template ships. One question: **is there a `FindRecord` on `Account` with an `IfElse` branch outside the Loop?** ⛔ It reads `sync-last-run`, not the daily row key; a session hunting for the row key will conclude the gate is absent when it is present.
 
 - **Gate present:** a manual re-run on the same day is safe, and the check above is the reason you know that.
 - **Gate absent:** run the workflow **once**, and treat every extra manual run as a table you will have to clean by hand. Tell the student that out loud before you run it.
@@ -179,7 +175,11 @@ Trigger -> FindRecord (does this batch's key already exist?) -> IfElse
 
 ### The wiring, in order
 
-1. **Find the two placeholders** by reading the workflow's HTTP step, rather than assuming their names: **the request URL** (it carries the ad account) and **the token**. Replace both with the student's values.
+1. **Find every placeholder by reading the workflow, and let the workflow tell you how many there are.** ⛔ **Do not carry a count into this step**, and do not assume their names either. **Read how many HTTP steps this workflow has**, then read each step for its own: each one carries **a request URL** (it holds the ad account) and **a token**. Replace all of them with the student's values.
+
+   ⛔ **Missing one is silent, which is why the count has to come from the workflow.** A wrong or absent token comes back as Meta error **190**; a wrong URL comes back as an **empty array**. ⚠️ **Neither interrupts the rest of the chain.** A half-wired workflow therefore runs to completion, writes the rows fed by the step you did fix, and leaves the table fed by the step you missed simply unchanged. It is not distinguishable from a table that had nothing to update.
+
+   ⇒ ⭐ **So the check is per step, not per workflow:** after wiring, run once and confirm that **every table this workflow writes has moved**, not only the first one.
 2. **Any edit to that workflow is a Base change.** Follow [references/changing-the-base.md](changing-the-base.md) for how it is made and how it is read back. Do not restate its rules here and do not work around them.
 3. **Enable it.** A copied Base brings its workflow across **still disabled**, by design, so that nothing starts moving in someone's account without a person saying so. It will not run until you enable it.
 4. **Run it once, manually.**

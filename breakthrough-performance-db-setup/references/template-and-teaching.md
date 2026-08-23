@@ -36,8 +36,11 @@
 lark-cli base +base-copy \
   --base-token Yt2WbfTeQa0tjQsjMUwlfaEvgXb \
   --name "<something that names this student>" \
+  --time-zone "<the student's IANA zone, e.g. Asia/Kuala_Lumpur>" \
   --as user
 ```
+
+🩸 **`--time-zone` is not optional, and leaving it off fails silently.** Measured 2026-08-24: **the copy does not inherit a time zone**, and the timer inside the copied workflow shifts with it, so the 07:00 you can read on the template is not the 07:00 the student's copy will actually fire at. ⛔ Nothing reports this. The workflow runs, rows arrive, and the run simply happens at an hour nobody chose, which is the same hour Check 3's timezone reasoning at gate 6 assumes it did not. ✅ **Passing the flag holds the timer in place**, measured the same day. ⭐ **Ask the student for their zone before you make the copy**, not after: the copy is where this is decided.
 
 ⛔ **Do not read the old instruction "the student clicks copy" as a rule against this.** The rule it came from is about **building** the Base through the API: several hundred calls, every one a failure point, which is the whole reason this is a template and not a provisioner. **A copy is one call.** It sits on the safe side of that rule, not the forbidden side.
 
@@ -154,6 +157,12 @@ This is the gate where one wrong number silently poisons every verdict the syste
 - 🩸 **`+record-list` caps at 200 rows per page and has no `.data.total`** (`lark-lessons.md:89-90`). `--limit 1000` still returns 200 with `has_more: true`. ⛔ **Never trust a single page's count**, in either direction: page to the end before you say a table is empty, and page to the end before you say it is not.
 
 **So the pass test is:** re-list each of the six tables to the end and confirm zero rows; re-list `Targets` and `Account` and confirm exactly one row each, holding the numbers from gate 4.
+
+### The ad layer comes back on its own, and that is checkable
+
+⭐ **You are emptying the ad layer here, and nobody refills it by hand.** The first sync builds those rows itself: it creates a row for every ad that has spend it cannot already match, and links the daily rows to it. ⛔ **So do not create ad rows at this gate, and do not warn the student that their ad layer is permanently empty.** It is empty until gate 7 runs, which is the design.
+
+⇒ ⭐ **That gives gate 7 a pass test it did not have:** after the first manual run, **the number of rows in the ad layer equals the number of ads that had spend on the day you synced**. ⛔ Neither number is guessed: the first is a re-list, and the second is the same count the student can read off Ads Manager for those dates, which is already in your hands from the pagination check. **Fewer rows than ads means the refill did not complete**, and it will not report that itself.
 
 ### When the CLI cannot delete it
 

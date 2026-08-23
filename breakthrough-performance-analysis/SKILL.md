@@ -81,7 +81,7 @@ Not one of those raises anything. They hand you a number that sums, formats, and
 | Reading for | Fields |
 |---|---|
 | Opening checks | `last-synced` (⛔ never `sync-age-hours`, see opening-checks.md) · `verdict` · `capacity-index` · the Ad Daily row key `<ad-id>__<YYYY-MM-DD>` · the Leads table's own date field |
-| Ad layer | `ad-id` · `ad-name` · `effective-status` · `ctr` · `cpm` · `frequency` · `click-to-conversation` |
+| Ad layer | `ad-id` · `ad-name` (⭐ both written by the sync, measured 2026-08-24) · `effective-status` (⚠️ written by the sync, but its arriving value is unverified: see opening-checks.md) · `ctr` · `cpm` · `frequency` · `click-to-conversation` (the rest of the row is formula) |
 | Lead economics | `qualified-rate` · `cost-per-qualified-28d` · `t-cost-per-qualified` · `is-qualified` (Leads) · `qualified` |
 | Sales | `qualified-to-won-rate` · `lost-reason` · per-handler close rate |
 | Execution | `capacity-index` · `reply-miss-rate` · `open-leads` · `replies` (⚠️ often blank by design, see the classification playbook: blank is unmeasured, not zero) |

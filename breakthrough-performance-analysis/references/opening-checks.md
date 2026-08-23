@@ -48,7 +48,9 @@ They exist because this Base can be stale, half-fed, duplicated, or renamed and 
 - Sync runs once a day: **stale above 36 hours** (one missed run plus slack), **hard refusal above 72**.
 - Sync runs twice a day: halve both.
 
-**Failure story.** The sync writes four columns on the Ads table (`ad-id`, `ad-name`, `effective-status`, `last-synced`) and the raw rows into Ad Daily; everything else in the Base is a formula over `TODAY()` windows. Those formulas keep computing perfectly against data that stopped arriving. A Base that last synced two weeks ago will produce a complete, internally consistent, confidently worded read of a fortnight-old month. Nothing about the output looks stale. This is the single cheapest way for this skill to lie.
+**Failure story.** The sync writes four columns on the Ads table (`ad-id`, `ad-name`, `effective-status`, `last-synced`) and the raw rows into Ad Daily; everything else in the Base is a formula over `TODAY()` windows. ⭐ **Graded, because this check is built entirely on that sentence.** **Measured 2026-08-24**, end to end on a copy: the sync creates the Ads rows, writes `ad-id` and `ad-name`, and stamps `last-synced` on the same run. ⚠️ **Unverified: `effective-status`.** The write path was proved with a stand-in value; that Meta's own status string arrives and lands in that column has never been observed, and per the select-option behaviour a value with no matching option fails **at the moment of writing**. ⛔ So do not read a blank or unchanged `effective-status` as an ad that did not change. **`last-synced` is the column this check depends on, and that one is measured.**
+
+⚠️ **A copy taken before 2026-08-24 does not write any of them**, and the tell is on the Ads table itself: a `last-synced` identical across every row and never moving. ⛔ **Treat that as a Base whose sync age cannot be read here**, not as a healthy old sync. Those formulas keep computing perfectly against data that stopped arriving. A Base that last synced two weeks ago will produce a complete, internally consistent, confidently worded read of a fortnight-old month. Nothing about the output looks stale. This is the single cheapest way for this skill to lie.
 
 **Scope of the failure: everything.** Do not proceed to the ad layer. There is no partial version of this one.
 
@@ -104,9 +106,9 @@ They exist because this Base can be stale, half-fed, duplicated, or renamed and 
 
 **Threshold:** exactly 1 per key. There is no tolerance band.
 
-**Failure story, measured.** A workflow whose loop only adds records writes the same batch again on every trigger: three triggers, three rows per key, nine rows where there should be three, and **the sums silently triple with no error** (`lark-lessons.md:651`). Lark's automation cannot do a real upsert, because conditional branches cannot nest inside a loop (`lark-lessons.md:648`) and there is no delete-record action at all (`lark-lessons.md:650`), so the only defence is a day-level gate outside the loop that checks whether today's key already exists (`lark-lessons.md:652`).
+**Failure story, measured.** A workflow whose loop only adds records writes the same batch again on every trigger: three triggers, three rows per key, nine rows where there should be three, and **the sums silently triple with no error** (`lark-lessons.md:651`). Lark's automation cannot branch per row, because conditional branches cannot nest inside a loop, and there is no delete-record action at all, so the daily rows are defended by a gate outside the loop that checks whether the account was already synced today. ⚠️ **The ad layer is defended by something else entirely**: a row that already exists has already had the daily rows linked to it, and a filled link never comes back out of the find that creates rows. ⛔ **Two mechanisms, and a Base can have one working and the other not.**
 
-Whether the copy in front of you has that gate wired is not something the schema probe can tell you. **Run the count regardless.**
+Whether the copy in front of you has either of them wired is not something the schema probe can tell you. **Run the count regardless**, and run it on both layers.
 
 **The direction of the error is worth stating to the student:** duplicates inflate spend, so every cost-per metric inflates and ROAS deflates. A duplicated Base tilts the entire read pessimistic. You will recommend killing ads that are fine.
 

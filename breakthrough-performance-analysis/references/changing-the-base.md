@@ -37,7 +37,17 @@ Read this before you touch a student's Base with anything other than a read.
 3. **Recorded in the student's vault note.** The IT-Systems note says this migration was applied, and when.
 4. **Detectable as already-applied by inspecting the Base at run time.** You open the Base and look for the field, the formula, the workflow step. If it is there, the migration ran.
 
-⛔ **There is deliberately no version-stamp system, and do not build one.** A stamp is a *claim* about the Base, and a claim goes stale the moment anyone edits by hand in the UI, which students do. A runtime inspection cannot go stale, because it is looking at the thing itself. Inspect; never trust a label.
+⛔ **Shape is decided by inspection, never by a label.** A label is a *claim* about the Base, and a claim about shape goes stale the moment anyone edits by hand in the UI, which students do. A runtime inspection cannot go stale, because it is looking at the thing itself.
+
+**One stamp exists, `Account.template-version`, and it answers a different question: which day this copy was taken from the template.** That is the copy's origin, not its shape, and hand-editing the Base cannot make it false, because an edit does not give the copy a different source. It exists because that question is the one thing inspection is structurally unable to answer: **inspection sees that a field is absent; it never sees why.** The same observation has two causes that want opposite responses. **This copy is older than the field** wants a migration. **Someone deleted or renamed it** wants the exact reverse, per §1a's `Never migrate a variant`, which that section calls the worst outcome available here. Without the stamp, a session facing an absent field has two moves: guess, or stop.
+
+**Three clauses, and the stamp is legal only under all three:**
+
+1. ⛔ **Shape is always judged by inspection. The stamp takes no part in that judgement, not once.**
+2. ⭐ **The stamp is read only after an inspection has already found a difference**, and only to choose between "an older copy" and "somebody changed this".
+3. ⛔ **When the two disagree, inspection wins, and the disagreement is itself the finding.** Something the stamped version should carry is absent ⇒ **this copy has been altered.** Report that plainly; ⛔ do not migrate it.
+
+⚠️ **A blank stamp is a real reading, not a fault.** It means the origin is unrecorded, which is exactly where every copy taken before the stamp shipped already stands, and a session treats it as a pre-stamp copy. A stamp holding a value the Base contradicts is caught by clause 3.
 
 ⛔ **The banned thing is improvisation**: a change you thought of in the moment, applied because it seemed better, and wrote down nowhere.
 
@@ -142,22 +152,55 @@ Every student's Base *is* a copy. So **any procedure keyed to a table id is brok
 The template's sync was built inside these constraints. Change the Base without respecting them and you can break the sync **without any error appearing anywhere**. All measured 2026-08-22.
 
 **No conditional branch inside a Loop.** An `IfElseBranch` placed under `loop_start` is rejected: `[code=800004006] cannot nest if-else nodes under switch or loop`.
-⛔ **Consequence: per-record upsert is impossible.** "For each row, find it, update if present, add if not", the first thing almost everyone reaches for, cannot be built in Lark automation.
+⛔ **Consequence: the per-record branch is impossible.** "For each row, find it, then update if present or add if not", the first thing almost everyone reaches for, cannot be written as a branch inside the loop. **That half is permanent.**
+
+✅ **Upsert itself is buildable, by a route that does not need a branch.** Measured 2026-08-24: `FindRecordAction` and `SetRecordAction` **can** sit inside a Loop, and their filter conditions can reference the loop item. Only the branch cannot. So the decision stops being something the workflow computes and becomes **a state the workflow writes down**:
+
+- **Each row, at the moment it is written, does a `FindRecord` for its parent and puts the result in a link field.** Found ⇒ the link is filled. Not found ⇒ the link is left empty. Nothing branches; the link simply records what was true.
+- **A `FindRecord` outside the loop then collects every row whose link is empty.** That set is exactly "the keys with no parent row", no more and no less.
+- **A second loop creates each missing parent and immediately sets the link on every row carrying that key.** Once filled, those rows can never appear in the empty-link find again.
+
+⭐ **What makes this an upsert is that the decision is a written state rather than a recomputation.** It does not depend on a formula, on a time window, or on a count, so nothing about it drifts. ⛔ **Do not read the branch limitation as "upsert cannot be done here".** It cost a full build to discover otherwise.
 
 **No delete-record action.** The whole action list is `AddRecordAction` / `SetRecordAction` / `FindRecordAction` / `HTTPClientAction` / `Delay` / `LarkMessageAction` / `GenerateAiTextAction`.
 ⛔ **Consequence: clear-and-reload is impossible too.** Both of the obvious escape routes are closed.
 
 **A bare `AddRecordAction` honestly duplicates on every trigger.** Measured: the same workflow fired 3 times, returning 3 rows each time, giving 9 rows in the table, three copies of every key. **Sums silently multiply. Nothing errors.**
 
-**The legal shape is the day-gate:** `FindRecord` plus `IfElse` **outside** the loop, gating on a predictable key.
+**The legal shape is the day-gate:** `FindRecord` plus `IfElse` **outside** the loop, gating on a predictable key. Measured in both directions: with the key present, the whole batch is skipped (table stayed at 9 rows); with the table cleared, 3 rows were written. A branch *outside* a Loop is legal, and a Loop *under* a branch is legal. Only "branch inside Loop" is banned.
+
+**What the template ships is that gate followed by the link-state upsert above, in two stages.** ⛔ Read the workflow before you reason about any of it; this is the shape as of 2026-08-24 and a student's copy is whatever day it was taken.
 
 ```
-Trigger → FindRecordAction (is this batch's key already present?) → IfElseBranch
-          ├─ if_true  → do nothing (today is already loaded)
-          └─ if_false → HTTPClientAction → Loop → AddRecordAction
+STAGE 1, the gated daily load
+  Trigger       timer
+  FindRecord    Account, sync-last-run is today            <- the gate reads this
+  IfElse        nothing found ? then carry on              <- outside the loop, and it has to be
+  HTTPClient    Meta Insights
+  Loop  over the returned rows
+    FindRecord  the ad's row on the dimension table
+    AddRecord   the daily row, link set to what was found (empty when nothing was found)
+
+STAGE 2, the missing parents, then the refresh
+  FindRecord    every daily row whose link is empty        <- the ads with no row of their own
+  Loop  over those rows
+    AddRecord   the ad's row
+    SetRecord   fill the link on every daily row carrying that ad's key
+  Loop  over the insights rows again
+    SetRecord   the ad's name
+  HTTPClient    the ads endpoint, for status
+  Loop  over that response
+    SetRecord   the ad's status, and its synced-at time
+  SetRecord     Account, sync-last-run = now               <- the gate's own stamp, and it is last
 ```
 
-Measured in both directions: with the key present, the whole batch is skipped (table stayed at 9 rows); with the table cleared, 3 rows were written. A branch *outside* a Loop is legal, and a Loop *under* a branch is legal. Only "branch inside Loop" is banned. The key the template gates on is `<ad-id>__<YYYY-MM-DD>`.
+⛔ **The gate governs stage 1 only, and the two stages are protected by two different mechanisms.** Stage 2 does not repeat itself because of the gate. It does not repeat itself because **an ad whose row already exists has already had its link filled**, so it never comes back out of the empty-link find. ⚠️ **Conflating the two is how a migration breaks one while testing the other**, and the break is silent in both directions.
+
+⛔ **`Account.sync-last-run` is what the gate asks about**, not the daily row key. `<ad-id>__<YYYY-MM-DD>` is still the key every rollup joins on; it is no longer the key the gate reads.
+
+⚠️ **The gate stamps last, so a stamping failure is invisible on the run that causes it.** The rows land, the run looks healthy, and the duplicate does not appear until the next trigger. ⇒ **Verifying the gate means reading `Account.sync-last-run` back**, never counting rows.
+
+⚠️ **One boundary that is real and has not been closed.** If many days of rows for the same ad are pasted in by hand *before* the first sync, all of them carry an empty link, the empty-link find returns all of them at once, and duplicate parent rows are created. Following the install order, where the demo data is cleared first, this cannot arise. It is still there.
 
 ⚠️ **Its cost, and this is the half that gets dropped when people summarise it: daily idempotency only.** You never absorb the source's after-the-fact corrections. That is fine for spend and impressions, which converge fast. It is **not** fine for attribution-type numbers that Meta revises backwards over 28 days, and **Meta's invalid-click refunds are never picked up by this shape at all**. Re-running does not fix that, because the gate sees the key already exists and skips the day. If a migration needs retroactive correction, say plainly that this shape is not the tool. ⛔ Do not quietly assume a re-run will absorb it.
 
@@ -180,7 +223,11 @@ stage 2   REGEXEXTRACT([stage 1], "VALUE_KEY.:([0-9]+)")       ← pull the numb
 
 ⚠️ **Wrap the whole thing in `IF(...,0)`.** Measured: rows containing the target return the correct number; rows **not** containing it return **blank in both columns, with no error and no wrong number**. Blank and zero are not the same thing downstream, and an absent action reading as blank will quietly poison an average.
 
-**Rollups walk text keys, never link fields.** Rows written by the sync **do not auto-link**. Linking would require a `FindRecord` for the record id inside the Loop, one more step that can also come back empty. So a rollup written as `[reverse-link].[column].SUM()` **silently omits every synced row**: the number is wrong and nothing anywhere says so. Write it as:
+**Rollups walk text keys, never link fields.** ⚠️ **Two facts that sound like one, and they have come apart.**
+
+**Fact one, changed:** the link *does* get written now. Since 2026-08-24 the sync fills it, using exactly the `FindRecord`-inside-the-Loop step this rule once cited as the reason it was not done, plus a `SetRecord` in stage 2 for the ones that found nothing.
+
+**Fact two, unchanged:** ⛔ **a rollup still may not walk that link.** A link filled by a later pass is not filled when the row lands, and a link that found nothing stays empty until stage 2 reaches it, so `[reverse-link].[column].SUM()` reads a value that is still moving and **silently omits rows**: the number is wrong and nothing anywhere says so. ⛔ Do not read "the sync links now" as permission to write a rollup across the link. Write it as:
 
 ```
 [Table].FILTER(CurrentValue.[key]=[key]).[column].LISTCOMBINE().SUM()
@@ -194,7 +241,7 @@ so the entire system runs on text keys, which are the one thing any sync can rel
 
 ## 6. Provenance, and what wins
 
-Every fact in this file was **measured on the author's own Lark tenant on 2026-08-22 and 2026-08-23**, on the Base this template was built from. They are measurements, not readings of documentation. That distinction matters here: Lark's documented behaviour and its actual behaviour diverge often enough that a documented claim and a measured one are not the same grade of fact, and this file carries only the measured grade.
+Every fact in this file was **measured on the author's own Lark tenant on 2026-08-22, 2026-08-23 and 2026-08-24**, on the Base this template was built from. They are measurements, not readings of documentation. That distinction matters here: Lark's documented behaviour and its actual behaviour diverge often enough that a documented claim and a measured one are not the same grade of fact, and this file carries only the measured grade.
 
 ⭐ **A contradicting observation on the student's own account wins.** If you run one of these procedures and the Base does something else, the Base is right and this file is stale.
 
