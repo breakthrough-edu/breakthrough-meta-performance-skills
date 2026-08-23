@@ -24,7 +24,9 @@
 
 ✅ **Settled: this template is shareable with copy permission, and an outside tenant has taken a copy of it.** Its sharing record reads `link_share_entity: anyone_readable`, `security_entity: anyone_can_view` (that field is the copy, export and print control, and this is its widest setting) and `external_access: true`; the owner separately made a working copy from a real external-tenant account. ⛔ **Do not reopen this as an open question.** If one particular student still cannot copy, the cause is on their side, which is gate 0's business, and not the owner's sharing setting.
 
-⚠️ **Publication note for whoever ships this package, and the measurement above makes it more urgent rather than less:** this URL is a **live production Base in the owner's tenant**, its link is currently readable and copyable by anyone who has it without needing a Lark account at all, and `npx skills add` puts it in front of everyone who installs. ⛔ The fix is not to tighten the sharing, because tightening it is what stops students copying. ⭐ **Make a purpose-built template copy and put that in the slot**, then the working master can be locked down without breaking any install.
+✅ **Settled: the Base in that slot is already the purpose-built template, and it is the one to ship.** It is not a working Base that happens to be shared, and there is no second copy to make before publication. ⛔ **Do not reopen this either**, and in particular ⛔ do not propose swapping the slot for a fresh copy, locking the original down, or holding publication until one is made. The open link and the public repo that carries it are the delivery mechanism working as intended: a student who cannot reach and copy this link has nothing to install into.
+
+⚠️ **Both settled lines exist because this question has come back more than once.** Each time it returned, the trigger was a record that stated half of what had been measured, and the reader supplied the missing half as doubt. ⭐ **If a later measurement changes either answer, edit these lines rather than adding a caveat beside them**, because a caveat is what starts the next round.
 
 ### The copy itself: you run it
 
