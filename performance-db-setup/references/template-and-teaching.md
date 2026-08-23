@@ -1,6 +1,6 @@
 # Gates 2 to 5: the template, the teaching, the economics, the clearing
 
-> Load this when gate 1 has passed and the student is about to copy the Base. It covers the four gates that happen entirely inside Lark. The Meta side is [meta-token-and-sync.md](meta-token-and-sync.md); anything that modifies the student's Base is governed by [changing-the-base.md](changing-the-base.md), and gate 5 is one of those things.
+> Load this when gates 0 and 1 have passed and you are about to copy the Base for the student. It covers the four gates that happen entirely inside Lark. The Meta side is [meta-token-and-sync.md](meta-token-and-sync.md); anything that modifies the student's Base is governed by [changing-the-base.md](changing-the-base.md), and gate 5 is one of those things.
 
 **Order is load-bearing here.** Gate 3 teaches on the demo rows and gate 5 deletes them. ⛔ Never clear before teaching. That demo board is the only place the student will ever see all six verdicts side by side; their own board will show two or three of them, and the four they never saw are exactly the ones that will confuse them later.
 
@@ -22,38 +22,59 @@
 
 ⛔ **The guard itself is [changing-the-base.md](changing-the-base.md) §0, and that is the only copy.** Run it here, at gate 2, the moment the student has something to point at, and again before every later write. ⛔ Do not restate its outcomes in this file: a second copy of a three-outcome rule is how one of them quietly becomes two.
 
-⚠️ **Unverified, and worth settling once: whether that link is shareable with copy permission at all.** What is measured is that a copy carries everything, that the copy's formulas rebind to the copy, and that an external tenant can receive one (`lark-lessons.md:694-708`, `:760`). ⛔ Whether *this* URL, with its current sharing setting, lets an outside student duplicate rather than merely view or bounce, was never tested. If the student cannot duplicate, that is the owner's sharing setting and not something to work around: say so and stop.
+✅ **Settled: this template is shareable with copy permission, and an outside tenant has taken a copy of it.** Its sharing record reads `link_share_entity: anyone_readable`, `security_entity: anyone_can_view` (that field is the copy, export and print control, and this is its widest setting) and `external_access: true`; the owner separately made a working copy from a real external-tenant account. ⛔ **Do not reopen this as an open question.** If one particular student still cannot copy, the cause is on their side, which is gate 0's business, and not the owner's sharing setting.
 
-⚠️ **Publication note for whoever ships this package:** this URL is a live production Base in the owner's tenant, and `npx skills add` puts it in front of everyone who installs. Confirm its sharing setting deliberately before publishing, and prefer a purpose-made template copy over the working master if one can be made.
+⚠️ **Publication note for whoever ships this package, and the measurement above makes it more urgent rather than less:** this URL is a **live production Base in the owner's tenant**, its link is currently readable and copyable by anyone who has it without needing a Lark account at all, and `npx skills add` puts it in front of everyone who installs. ⛔ The fix is not to tighten the sharing, because tightening it is what stops students copying. ⭐ **Make a purpose-built template copy and put that in the slot**, then the working master can be locked down without breaking any install.
 
-### The copy itself
+### The copy itself: you run it
 
-**The student clicks copy. You do not build the Base.** Building it through the API is several hundred calls and every one of them is a failure point, which is the whole reason this is a template and not a provisioner.
+**You make the copy. You do not build the Base, and you do not send the student off to click.**
 
-⛔ **Do not hardcode Lark's UI wording for the duplicate control.** It gets renamed like every other product's menu. Find the current flow at runtime and guide them, the same discipline as the Meta gate.
+```
+lark-cli base +base-copy \
+  --base-token Yt2WbfTeQa0tjQsjMUwlfaEvgXb \
+  --name "<something that names this student>" \
+  --as user
+```
+
+⛔ **Do not read the old instruction "the student clicks copy" as a rule against this.** The rule it came from is about **building** the Base through the API: several hundred calls, every one a failure point, which is the whole reason this is a template and not a provisioner. **A copy is one call.** It sits on the safe side of that rule, not the forbidden side.
+
+⭐ **Nor does running it ask anything extra of the student.** Gate 4 writes Targets, gate 5 clears six tables, gate 7 edits the workflow and gate 8 re-sums the rows, all through the same CLI. The toolchain is required either way, which is why it is gate 0 and why using it here costs nothing new.
+
+**Five conditions, and they hold together:**
+
+1. ⛔ **The student's identity, never the owner's.** The API creates the new Base under whoever's token called it, and there is no parameter that redirects it. The verified direction is the student's own CLI taking a copy of the owner's template; the reverse, pushing a copy into someone else's Drive, cannot be expressed at all.
+2. ⛔ **Gate 0 first.** If the CLI channel is not proven, do not attempt the copy and do not retry around the failure. Gate 0 is the fix, or the stop.
+3. ⛔ **Read the returned token back with `+base-get` and run changing-the-base.md §0 against it.** `ok: true` is not evidence that a Base exists at the other end of it.
+4. **Give `--name` something that names this student.** ⛔ Never accept the default. This is the whole defence against the failure in the next paragraph.
+5. **Keep the manual path.** If the call fails after gate 0 passed, hand them the link, let them click, and rejoin at the pass test below. ⛔ Do not loop the CLI.
+
+🩸 **The one new failure this introduces, and it is worth knowing before it happens: two copies.** A student who already clicked copy on their own, and then has the session make one too, ends up with two Bases that are identical in every way the pass test can see. Every later gate then writes into one of them while the student is looking at the other, and **nothing errors at any point**, because both copies are healthy. ⛔ The token check does not catch it: both tokens differ from the master. Condition 4 and the vault note at gate 9 are what catch it. ⭐ **So ask, before you copy, whether they have already made one**, and if they have, use theirs.
+
+⛔ **If you do fall back to the manual path, do not hardcode Lark's UI wording for the duplicate control.** It gets renamed like every other product's menu. Find the current flow at runtime and guide them, the same discipline as the Meta gate.
 
 ### After the copy: resolve everything by name
 
 🩸 **`table_id` regenerates on copy** (`lark-lessons.md:706`: `tbl945l1vrceuSZQ` became `tbl8Fts8eOQFZLcV` in the measured copy). ⛔ **So every table this skill ever touches is resolved by name at runtime, in every session, forever.** An id written into this package, into a note, or into a variable that survives a session is a bug that will surface on the second student and look like a permissions problem.
 
-### Pass test, and the one thing that is not yet measured
+### Pass test
 
 **A same-tenant copy carries everything** (`lark-lessons.md:694-702`, measured 2026-08-22 on an 8 table / ~140 field / 20 block / 1 workflow Base): tables and records, all 43 field descriptions, formulas and lookups and links computing correct values, the dashboard and its blocks, and **the workflow, which comes across and stays disabled** (`:702`).
 
 ⭐ **The copy's formulas rebind to the copy** (`lark-lessons.md:704`): pushing a spend row of 999 into the copy moved the copy's ad layer to 7699 while the original stayed at 6700. That was worth measuring for a reason worth remembering (`:705`): **when the two numbers agree, "computed correctly" and "still pointing at the original" look exactly the same.** You do not need to re-run that test per student; it is a property of Lark's copy operation, not of their account.
 
-⚠️ **What is not recorded as measured: whether a copy taken across a tenant boundary carries all five.** The pit-book records only that a cross-tenant copy **can be taken** (`lark-lessons.md:708`, measured 2026-08-23). The completeness table above was measured inside one tenant. ⛔ Do not assert that a student in another tenant gets the workflow.
+✅ **A cross-tenant copy has been made from a real external-tenant account and it works** (owner-measured, 2026-08-23, recorded at `lark-lessons.md:709`). ⛔ **The earlier split between "can be taken" and "carries everything" is retired, and reopening it is a known waste**: the pit-book entry originally said only "an outside tenant can take one", and three separate documents each read that silence as an open question and re-raised it. ⭐ **Run the pass test below because it is how you check this student's copy, not because cross-tenant completeness is in doubt.**
 
 **So make gate 2's pass test the measurement**, and it costs one pass over their copy:
 
-1. ⛔ **The base token is NOT the master token** (changing-the-base.md §0). This is item 1 because items 2 to 6 all pass on the master: it genuinely has the tables, the descriptions, the working formulas, the dashboard and the disabled workflow. ⛔ **Every other item on this list is evidence of a healthy Base and none of them is evidence of the student's Base.**
+1. ⛔ **The base token is NOT the master token** (changing-the-base.md §0). This is item 1 because items 2 to 6 all pass on the master: it genuinely has the tables, the descriptions, the working formulas, the dashboard and the disabled workflow. ⛔ **Every other item on this list is evidence of a healthy Base and none of them is evidence of the student's Base.** ⭐ When you ran the copy yourself, this token is the value `+base-copy` returned, which is a better source than a pasted link, and ⛔ it is still checked. §0 governs every write in every session, not this gate alone, and a later session holds nothing but the vault note and whatever Base is in front of it.
 2. All eight tables resolve **by name**, and each has the records you expect (demo rows still present at this point).
 3. Field descriptions are present on the fields that carry them. ⛔ Do not eyeball one field; a copy that dropped descriptions drops them everywhere, so check a handful across two tables.
 4. At least one cross-table formula returns a nonzero value. A formula that returns zero on a board full of demo data is the silent-rollup family, not a healthy copy.
 5. The dashboard exists and its blocks are there.
 6. **The sync workflow exists and is disabled.** ⭐ If it is absent, say so plainly rather than working around it: an absent workflow is the first cross-tenant completeness failure anyone has seen, it is worth telling the owner about, and gates 6 and 7 have nothing to wire without it.
 
-⚠️ **Unverified precondition, stated rather than assumed:** this gate needs programmatic read access to the student's Base (listing tables, listing records). Whether a student's fresh environment has Lark tooling configured is not something this package has measured. If it does not, that is a setup step in front of gate 2, not a reason to improvise a manual walkthrough of eight tables.
+📌 **The precondition this gate used to state as unverified is now gate 0**, in `SKILL.md`, and it is a gate with a pass test rather than a note. It was promoted because programmatic access is not a gate 2 nicety: gates 4, 5, 7 and 8 all need it too, so discovering it missing here, or worse at gate 4, means the install was never going to finish. ⛔ If it is absent, run gate 0 or stop there. ⛔ Never improvise a manual walkthrough of eight tables around it.
 
 ---
 

@@ -34,15 +34,38 @@ You are installing one system, for one student, once. The end state is narrow an
 
 **Speak the student's own language.** This file is in English; the session is not. Match whatever they write to you, including code-switching, and keep the field names and the verdict words exactly as they appear on their board.
 
+## Gate 0: the toolchain, and it is a gate
+
+**Every gate from 2 onward reaches the student's Base through `lark-cli`, under the student's own identity.** Gate 2 copies the template and reads the roster off the copy, gate 4 writes Targets and reads the row back, gate 5 clears six tables and counts them, gate 7 edits the sync workflow, gate 8 re-sums the raw rows without going through the board's own totals. ⭐ **So this is not an accessory to gate 2. It is the floor the rest of the install stands on**, and a session that discovers it missing at gate 4 has already spent the student's evening on gates 1 through 3.
+
+**Three checks, and they are checks rather than questions**, the same discipline as gate 1's vault probe: you are looking for something that either works or does not, ⛔ never for the student's opinion about whether it is installed.
+
+1. `lark-cli --version` returns a version.
+2. `lark-cli whoami` returns a **user** identity whose token is not `needs_refresh`. ⚠️ A user token expires quietly (`lark-lessons.md:76`), and an expired one surfaces much later as a parse error on an auth object, which reads like a broken script rather than a dead login.
+3. `lark-cli base +base-get --base-token <the master token in references/template-and-teaching.md>` returns the template's info. ⭐ **This single call proves four things at once**: the CLI is installed, the login is alive, the scopes reach Base, and **this student can actually see the template**. It is the same shape as gate 6, where one Insights call proves the app, the Marketing API product, the System User and `ads_read` together.
+
+**When a check fails, the fix is the student's to run, and the browser part of it is two round trips:**
+
+- `npm install -g @larksuite/cli` if check 1 found nothing. ⚠️ On a machine whose npm prefix is not on the shell's `PATH`, this succeeds and the binary still appears missing; resolve it by full path before concluding the install failed.
+- `lark-cli config init --new` creates and binds a Lark app through the browser. ⛔ They do not have to hand-build an app in the developer console, and ⛔ you do not send them there.
+- `lark-cli auth login --domain base,drive` grants the scopes. `drive` is needed alongside `base`, because copying a Base creates a file in their Drive.
+- ⭐ **Guide it; do not attempt to do it for them.** Both commands block on a browser step only they can complete. Run the first in the background, take the verification URL out of its output, and hand them the URL exactly as printed. ⛔ Never retype, re-encode or reassemble that URL.
+
+⛔ **Never offer the owner's credentials as a shortcut, at this gate or any later one.** They authorise the owner's entire tenant, they cannot be moved between machines in any case because the user token lives in the OS keychain (`lark-lessons.md:70`), and a copy made under them would land in the owner's Drive rather than the student's.
+
+⚠️ **One failure this gate cannot fix, and naming it beats looping on it: a tenant that will not let this student create an app.** A personal Lark tenant makes them their own admin and it is theirs to do; a company tenant may refuse. If `config init --new` cannot complete for that reason, say which piece is blocked and who inside their organisation unblocks it, and stop. ⛔ There is no workaround, and improvising one is worse than the honest stop.
+
+**Pass test:** check 3 returned the template's info under the student's own identity. ⛔ Not "they said they installed it".
+
 ## Gate 1: Qualification, in full
 
-This is the gate most likely to end in **"no, and there is no workaround"**, which is why it is first and why it is written out here rather than in a reference file. ⛔ It is not the only one: gate 6 can end with Meta refusing access, and this package promises no gate a fix. Running gates 2 through 7 for someone who was going to fail gate 1 wastes their evening and yours.
+This is the gate most likely to end in **"no, and there is no workaround"**, which is why it is near the front and why it is written out here rather than in a reference file. ⛔ It is not the only one: gate 0 can end with a tenant that refuses to let them create an app, gate 6 can end with Meta refusing access, and this package promises no gate a fix. Running gates 2 through 7 for someone who was going to fail gate 1 wastes their evening and yours.
 
 **Three checks about access.** Ask directly, and take the answers as claims to be confirmed later, not as facts:
 
 1. **They own their own Meta Business Manager.** ⛔ An agency-owned account is the disqualifier. The student cannot create the System User the sync needs, and no amount of "I'll ask my agency" resolves it inside this session.
 2. **They are an admin on the ad account**, not an advertiser or an analyst.
-3. **They have a Lark account** that can hold a Base.
+3. **They have a Lark account** that can hold a Base. ⭐ Gate 0 already proved this one physically, so treat it as settled rather than asking again.
 
 ⭐ **Checks 1 and 2 are load-bearing but self-reported, and that is acceptable here**, because a student who is wrong about them fails physically at gate 6, where creating a System User and calling Insights either works or does not. Gate 1 is there to save the ones who already know the answer is no.
 
@@ -64,7 +87,7 @@ This is the gate most likely to end in **"no, and there is no workaround"**, whi
 
 ## Gates 2 to 10, in governing form
 
-**2. Copy the template.** The student copies it themselves; you never build it field by field. Then **resolve every table by name, and read the roster off their copy at runtime**, because `table_id` regenerates on copy (`lark-lessons.md:706`), so an id written down anywhere is a bug waiting for its second student. ⛔ **Pass test item 1: the token of their copy is not the master token** ([references/changing-the-base.md](references/changing-the-base.md) §0). The master passes every other check on the list, because it is the healthy original; only the token tells the two apart. Then: all eight tables resolve by name, and the sync workflow came across **disabled** (a copy carries the workflow and keeps it disabled, `lark-lessons.md:702`).
+**2. Copy the template, and you run the copy.** ⭐ **`lark-cli base +base-copy` does in one call what the student would otherwise do by hand**, under their identity from gate 0, and the copy lands in their Drive owned by them. ⛔ **This is not the thing the "template, not a provisioner" rule forbids.** That rule is about building the Base field by field: several hundred calls, every one a failure point. A copy is one call. ⛔ **It runs under the student's own credentials and never the owner's**, because the new Base belongs to whoever's token made it and the API has no parameter that says otherwise. Then **resolve every table by name, and read the roster off their copy at runtime**, because `table_id` regenerates on copy (`lark-lessons.md:706`), so an id written down anywhere is a bug waiting for its second student. ⛔ **Pass test item 1: the token of their copy is not the master token** ([references/changing-the-base.md](references/changing-the-base.md) §0). ⭐ Running the copy yourself makes that check stronger rather than redundant: the token now arrives as an API return value instead of off a student's clipboard. The master passes every other check on the list, because it is the healthy original; only the token tells the two apart. Then: all eight tables resolve by name, and the sync workflow came across **disabled** (a copy carries the workflow and keeps it disabled, `lark-lessons.md:702`). ⛔ **The manual path is not deleted.** If the call fails after gate 0 passed, hand them the link, let them click, and rejoin at the same pass test. The command, its conditions and the one new failure it introduces are in [references/template-and-teaching.md](references/template-and-teaching.md).
 
 **3. Teach the demo board.** ⛔ **Teaching, not an exam.** Never ask "do you understand what this means" and then gate the install on the answer. ⭐ **Show them one pair and stop**: the cheapest ad per conversation on the board is a KILL, the most expensive is a SCALE. That single comparison is the reason this whole system exists. ⛔ Do not tour the other verdicts; they arrive on their own every week, attached to the student's own ads. There is no pass test here on purpose: they re-hear the whole thing next week with their own money on the board, which is when it actually lands.
 
@@ -116,5 +139,6 @@ Recorded so no session spends a student's time relitigating a decision already m
 
 - ⛔ **The template ships as it is.** No redesign, no wide schema, no second template, no A/C split, no e-commerce variant, no mode flags, no version stamps. All of these were considered and reversed. A proposal to add one is a product decision, not a session decision.
 - ⛔ **This skill never amends anyone's vault doctrine** and never proposes adding a `type:` to it to make room for its note. That is the vault owner's business, taken with their own vault tooling.
-- ⛔ **This skill never edits the template Base itself**, only the student's copy of it.
+- ⛔ **This skill never edits the template Base itself**, only the student's copy of it. Reading it is fine, and gate 0's third check does exactly that; ⛔ writing to it is the one thing changing-the-base.md §0 exists to stop.
+- ⛔ **The copy runs under the student's credentials or it does not run.** Settled: the session performs the copy rather than asking the student to click it, and it never does so with the owner's identity. A proposal to ship the owner's credentials, in any wrapper, is not a session decision and not a product one either.
 - ⭐ **The install is the deliverable, and the vault note is what makes it survive.** A perfectly wired Base with no note is a system the student will be unable to explain, and that next week's session will have to rediscover by interrogation.
