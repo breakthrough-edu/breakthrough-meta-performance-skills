@@ -83,3 +83,9 @@ So:
 - Every legal change to a student's Base is written so that a later session can detect it as already-applied.
 
 The rules for that, and the measured Lark behaviour they are built on, are in `references/changing-the-base.md`.
+
+## License
+
+MIT. Built and maintained by [Breakthrough EDU](https://github.com/breakthrough-edu).
+
+This skill directs an AI agent running on your machine to read and modify your own files. Review what it proposes before approving it, keep backups of anything you care about, and note that everything here is provided as is, without warranty of any kind (see LICENSE).
