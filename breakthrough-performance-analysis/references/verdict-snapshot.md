@@ -12,13 +12,13 @@
 
 **In this order, and stop at the first hit:**
 
-1. **The IT-Systems note.** `0[4-9]_<Business>-Business-Wing/01_Assets/IT-Systems/`, the note `performance-db-setup` wrote at its gate 9. This is the designed path and it is where the Base name, the URL, the `base_token`, the table list, and the known limitations already are.
+1. **The IT-Systems note.** `0[4-9]_<Business>-Business-Wing/01_Assets/IT-Systems/`, the note `breakthrough-performance-db-setup` wrote at its gate 9. This is the designed path and it is where the Base name, the URL, the `base_token`, the table list, and the known limitations already are.
 2. **Grep the vault for `base_token`.** Catches a note that was filed under a different name, or moved.
 3. **Ask the student.**
 
 ⚠️ Keep this order identical to the one in the analysis `SKILL.md`. Two find orders that disagree is the same failure as no find order: the session takes whichever it read most recently.
 
-**If step 1 and step 2 both miss and step 3 gets you a Base:** you can run the analysis, and you should. But you have found a Base whose declared shape lives nowhere. ⛔ Do not invent a note to hold the snapshot. Say plainly at the close that there is no setup note for this Base, that the snapshot therefore has nowhere legal to land, and that `performance-db-setup`'s gate 9 is what creates it. The contract for that note is that skill's `references/vault-note.md`, and creating it is that skill's job, not yours.
+**If step 1 and step 2 both miss and step 3 gets you a Base:** you can run the analysis, and you should. But you have found a Base whose declared shape lives nowhere. ⛔ Do not invent a note to hold the snapshot. Say plainly at the close that there is no setup note for this Base, that the snapshot therefore has nowhere legal to land, and that `breakthrough-performance-db-setup`'s gate 9 is what creates it. The contract for that note is that skill's `references/vault-note.md`, and creating it is that skill's job, not yours.
 
 **If the vault itself is absent** (no `99_Meta/structure-doctrine.md`): deliver the analysis in the session and write nothing. ⛔ Do not fall back to a plain note somewhere sensible. A note in a shape the vault does not recognise is invisible to every mechanism that would keep it alive, which makes it worse than none: it reads as done and behaves as nothing.
 

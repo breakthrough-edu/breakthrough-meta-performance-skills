@@ -1,6 +1,6 @@
 # Changing a student's Base
 
-This file ships identically inside `performance-db-setup` and `performance-analysis`, because each skill has to carry it into context on its own. The two copies are byte-identical on purpose. If they ever differ, one of them is wrong (see the repo README).
+This file ships identically inside `breakthrough-performance-db-setup` and `breakthrough-performance-analysis`, because each skill has to carry it into context on its own. The two copies are byte-identical on purpose. If they ever differ, one of them is wrong (see the repo README).
 
 Read this before you touch a student's Base with anything other than a read.
 
@@ -62,7 +62,7 @@ The four conditions above are written for **migrations**. Applied to everything,
 **Student-owned variant.** The student's funnel does not fit and, per the setup skill, the session may help them build their own version rather than pretend the template describes their business. ⛔ **This can never satisfy conditions 1 and 2** (nobody declared it in advance, and it does not ship with the skill), and that does not make it illegal. It makes it a different thing. What it owes instead:
 
 1. **The vault note records what was built**, concretely enough that a session which has never seen this Base can tell what is there. This is condition 3 doing the whole job alone.
-2. ⛔ **From that moment the skills treat this Base as unknown shape**, and `performance-analysis` resolves every table and every field by name before computing anything, refusing in plain language when something it needs is absent. It never assumes the template's shape again for this student.
+2. ⛔ **From that moment the skills treat this Base as unknown shape**, and `breakthrough-performance-analysis` resolves every table and every field by name before computing anything, refusing in plain language when something it needs is absent. It never assumes the template's shape again for this student.
 3. ⛔ **Never migrate a variant.** A migration written against the template's shape, applied to a Base that no longer has that shape, is the worst outcome available here: it will mostly succeed and silently corrupt the parts that differ.
 
 **The test at §1 still governs all three.** A variant that nobody wrote down fails it exactly as improvisation does, and for the same reason.

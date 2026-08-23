@@ -2,7 +2,7 @@
 
 > Load before anything touches the student's vault, and re-read it on any second setup run. This file is the entire contract for the one note this skill leaves behind: whether you are allowed to write at all, where it lands, what shape it takes, what it must never contain, and how you avoid destroying the previous run's copy of it.
 
-This note is the only durable output of the whole setup. The Base lives in Lark, the token lives in a workflow, and both are invisible to a future session. This note is how `performance-analysis` finds the Base next week, and how a session six months from now can state what shape this Base is in. If setup finishes and this note does not exist, setup did not finish.
+This note is the only durable output of the whole setup. The Base lives in Lark, the token lives in a workflow, and both are invisible to a future session. This note is how `breakthrough-performance-analysis` finds the Base next week, and how a session six months from now can state what shape this Base is in. If setup finishes and this note does not exist, setup did not finish.
 
 ⛔ **The law is the student's own `99_Meta/structure-doctrine.md`, read live, at the moment you write.** This package carries no copy of it and neither do you. Section 8 declares the shape of the note, section 0 is the filing decision tree, section 5 is the law on names. Read them at the time. ⛔ Never a key list quoted here, and ⛔ never a remembered version of section 8: this student may have amended it.
 
@@ -14,9 +14,9 @@ This note is the only durable output of the whole setup. The Base lives in Lark,
 
 **If it is absent: STOP.** Say plainly that this skill writes into a vault built by `my-second-brain`, that this student does not have one yet, and that installing it is the next step. Then stop. The Base itself is fine and the setup work is not wasted; it just has nowhere legal to be recorded yet.
 
-⛔ **Do not degrade to writing a plain note somewhere sensible.** This is the tempting failure and it is worse than stopping. A note in a shape the vault does not recognise is invisible to every mechanism that would otherwise keep it alive: it is not in any family, so the weekly maintenance pass has no opinion about it, nothing checks it, and `performance-analysis` looking for an IT-Systems note will not find it. You would have produced a file that reads as done and behaves as nothing.
+⛔ **Do not degrade to writing a plain note somewhere sensible.** This is the tempting failure and it is worse than stopping. A note in a shape the vault does not recognise is invisible to every mechanism that would otherwise keep it alive: it is not in any family, so the weekly maintenance pass has no opinion about it, nothing checks it, and `breakthrough-performance-analysis` looking for an IT-Systems note will not find it. You would have produced a file that reads as done and behaves as nothing.
 
-⛔ **Do not offer to amend the student's doctrine to make room.** Changing that vault's law is the owner's call, taken with `vault-guardian`, and it is not part of this job.
+⛔ **Do not offer to amend the student's doctrine to make room.** Changing that vault's law is the owner's call, taken with `breakthrough-vault-guardian`, and it is not part of this job.
 
 ---
 
@@ -41,7 +41,7 @@ This note is the only durable output of the whole setup. The Base lives in Lark,
 
 **Read the required and optional keys off the student's own section 8 at write time, and write exactly what it declares.** `holder` is a known optional on that family and is a reasonable place to record who owns the ad account, if that section still declares it. ⛔ Do not hardcode a key list in this file, do not carry one in your head from a previous student, and do not reuse the list from the last time you ran this. Section 8 is amendable and amending it is the whole point of it being the single source.
 
-⛔ **Never invent a `type:`.** An undeclared type is a hard BLOCK from the frontmatter guard, unlike an undeclared extra key, which is only flagged for the session to judge. If section 8 has no `it-system` family in it, this vault's constitution is older than the family this note needs. Say that plainly, say that `vault-guardian` is who opens that door, and stop. ⛔ Do not improvise a family. ⛔ Do not write the note anyway.
+⛔ **Never invent a `type:`.** An undeclared type is a hard BLOCK from the frontmatter guard, unlike an undeclared extra key, which is only flagged for the session to judge. If section 8 has no `it-system` family in it, this vault's constitution is older than the family this note needs. Say that plainly, say that `breakthrough-vault-guardian` is who opens that door, and stop. ⛔ Do not improvise a family. ⛔ Do not write the note anyway.
 
 ---
 
@@ -55,7 +55,7 @@ This note is the only durable output of the whole setup. The Base lives in Lark,
 2. **Who can see it**: anyone with edit rights on the Base can open that workflow and read the token in clear. Write that sentence down. It is the fact that decides who the student may add as a Base collaborator, and it is invisible from the outside.
 3. **What to do when it needs replacing**: it is replaced in the workflow, not in this note, and this note is never the place a new one gets pasted "temporarily".
 
-⛔ **Also out: rows.** No ad-level spend tables, no lead lists, no daily numbers. Those stay in the Base. This note is the pointer half; the recurring numbers arrive as the dated verdict snapshots that `performance-analysis` appends (see section 9 below).
+⛔ **Also out: rows.** No ad-level spend tables, no lead lists, no daily numbers. Those stay in the Base. This note is the pointer half; the recurring numbers arrive as the dated verdict snapshots that `breakthrough-performance-analysis` appends (see section 9 below).
 
 ---
 
@@ -73,7 +73,7 @@ This note is the only durable output of the whole setup. The Base lives in Lark,
 
 ⛔ **NEVER blind-Write this path.**
 
-**The mechanism, so you do not talk yourself out of it.** The frontmatter guard's Write surface returns early on a path that already exists: `if os.path.exists(path): allow()  # an edit, not a birth; this guard watches births` (`fm-guard-hook.sh:345-346`). And Edit is not a matcher at all, the hook registers for Write and Bash only (`fm-guard-hook.sh:3`). So on a second setup run, a Write to this path is not checked, not warned about, and not refused. It replaces the entire file, silently, and the previous run's record plus every verdict snapshot `performance-analysis` has appended since goes with it.
+**The mechanism, so you do not talk yourself out of it.** The frontmatter guard's Write surface returns early on a path that already exists: `if os.path.exists(path): allow()  # an edit, not a birth; this guard watches births` (`fm-guard-hook.sh:345-346`). And Edit is not a matcher at all, the hook registers for Write and Bash only (`fm-guard-hook.sh:3`). So on a second setup run, a Write to this path is not checked, not warned about, and not refused. It replaces the entire file, silently, and the previous run's record plus every verdict snapshot `breakthrough-performance-analysis` has appended since goes with it.
 
 **The procedure, every time, including runs you are certain are the first:**
 
@@ -101,7 +101,7 @@ Two reasons it is not optional. The doctrine requires it of every filing (`my-se
 Prose under plain headings. Written so a stranger opening it cold can operate the system.
 
 **The Base itself**
-- Base name, Base URL, `base_token`. `performance-analysis` connects with the token; the URL is for the human.
+- Base name, Base URL, `base_token`. `breakthrough-performance-analysis` connects with the token; the URL is for the human.
 - **One line per table**, saying what that table holds. The template ships eight tables (`lark-lessons.md:694`, the copy test measured "8 表 / 约 140 栏 / 20 组件 / 1 条 workflow"). This is what saves the analysis session from re-deriving the schema every week.
 - ⛔ **The resolve-by-name warning, written into the note in as many words: `table_id` regenerates on every copy** (`lark-lessons.md:706`, measured: `tbl945l1vrceuSZQ` became `tbl8Fts8eOQFZLcV`). Anything operating this Base resolves tables by name. Hardcoding an id is the single most common way a later session breaks this system, and the failure looks like "table not found" against a table that is plainly sitting there.
 
@@ -110,7 +110,7 @@ Prose under plain headings. Written so a stranger opening it cold can operate th
 - The token pointer and visibility facts from section 4.
 
 **Open items** (⛔ this group exists so that a deferred check has somewhere to live; a hand-forward with no receiver never happens)
-- ⭐ **The seven-day reconciliation, if gate 8 ran on a single day.** A first install reconciles the one day gate 7 synced, which is thin evidence: small numbers can agree by luck while a join-key or aggregation defect sits underneath. Write it down here as owed, with the install date, and `performance-analysis` clears it on the first run where a full week exists.
+- ⭐ **The seven-day reconciliation, if gate 8 ran on a single day.** A first install reconciles the one day gate 7 synced, which is thin evidence: small numbers can agree by luck while a join-key or aggregation defect sits underneath. Write it down here as owed, with the install date, and `breakthrough-performance-analysis` clears it on the first run where a full week exists.
 - **Whether the template's workflow carries the day gate.** Gate 7 finds this out by reading the workflow. ⛔ Write down what was actually seen rather than what this package assumes, because the duplicate-row check and the never-retried-truncated-day behaviour both hang off it.
 - Anything else deferred at install, in one line each, with what would settle it.
 
@@ -128,7 +128,7 @@ Prose under plain headings. Written so a stranger opening it cold can operate th
 
 ## 9 · What this note becomes after setup
 
-**Setup writes the pointer half. `performance-analysis` writes the other half into this same note, as a dated verdict snapshot appended on every run.** That is the room's filing test satisfied in full: the pointer plus the recurring snapshot (`rooms-assets.md:115`). The mechanics of the append are that skill's `references/verdict-snapshot.md`, not this file's business.
+**Setup writes the pointer half. `breakthrough-performance-analysis` writes the other half into this same note, as a dated verdict snapshot appended on every run.** That is the room's filing test satisfied in full: the pointer plus the recurring snapshot (`rooms-assets.md:115`). The mechanics of the append are that skill's `references/verdict-snapshot.md`, not this file's business.
 
 ⭐ **Two consequences for you.** Leave the note in a shape that can be appended to: end it cleanly, do not close with a footer that a new section would have to be inserted above. And when you merge under section 6, the snapshot sections are the part that must survive untouched.
 

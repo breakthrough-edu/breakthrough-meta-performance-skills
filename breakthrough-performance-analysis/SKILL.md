@@ -1,5 +1,5 @@
 ---
-name: performance-analysis
+name: breakthrough-performance-analysis
 description: >
   Read a student's Meta-ads performance Base and tell them in plain language
   whose problem this week's numbers are: the ads, the content, the technical
@@ -10,10 +10,10 @@ description: >
   "看一下这週的广告". Do not invoke it because ads, Meta, or the Base were merely
   mentioned. NOT for installing anything: copying the template Base, filling
   Targets, clearing demo data, getting a Meta token, or wiring the sync workflow
-  all belong to performance-db-setup.
+  all belong to breakthrough-performance-db-setup.
 ---
 
-# Performance Analysis
+# Breakthrough Performance Analysis
 
 You read one student's Meta-ads Base once a week and answer one question they actually asked: **whose problem is this.** Not "here are your numbers". Not a dashboard read aloud. A named problem, a number, a comparator, and one action.
 
@@ -29,9 +29,9 @@ You read one student's Meta-ads Base once a week and answer one question they ac
 
 **The law is that vault's own `99_Meta/structure-doctrine.md`, read live, every session.** ⛔ This package carries no copy of it. Section 8 declares the shape of any note you touch, section 0 is the filing decision tree. Read them at the time, never from memory: this student may have amended their own constitution.
 
-**The Base was installed by `performance-db-setup`.** If the student has **no Base yet**, this is not your job: send them to that skill by name and stop.
+**The Base was installed by `breakthrough-performance-db-setup`.** If the student has **no Base yet**, this is not your job: send them to that skill by name and stop.
 
-⚠️ **A missing vault is a different case, and it does not stop you.** If the Base exists but there is no `99_Meta/structure-doctrine.md`, the analysis itself is unaffected, because it reads the Base and the Base is not in the vault. Deliver it in the session, then say plainly that the verdict snapshot has nowhere legal to land and that `performance-db-setup`'s gate 9 is what creates the note that would hold it. ⛔ Do not invent a note somewhere sensible instead: see references/verdict-snapshot.md, which is the authority here and says the same thing.
+⚠️ **A missing vault is a different case, and it does not stop you.** If the Base exists but there is no `99_Meta/structure-doctrine.md`, the analysis itself is unaffected, because it reads the Base and the Base is not in the vault. Deliver it in the session, then say plainly that the verdict snapshot has nowhere legal to land and that `breakthrough-performance-db-setup`'s gate 9 is what creates the note that would hold it. ⛔ Do not invent a note somewhere sensible instead: see references/verdict-snapshot.md, which is the authority here and says the same thing.
 
 **Cadence is weekly.** Monthly is too slow to catch a burned audience, daily is noise: a single lead flips a small-volume verdict, and you would spend the student's attention on coin flips.
 
@@ -41,7 +41,7 @@ You read one student's Meta-ads Base once a week and answer one question they ac
 
 **Read the note's Open items group before the checks.** The one that will normally be there: **a seven-day reconciliation owed from a first install**, where gate 8 could only compare a single day.
 
-**Clear it on the first run where a full week of `Ad Daily` exists**, using gate 8's procedure from `performance-db-setup/references/reconciliation-and-handover.md`: the student reads the Ads Manager total for the range, you pull the same range independently, you re-sum the raw rows yourself with `--field-id` and paging to `has_more: false`, and you compare all three.
+**Clear it on the first run where a full week of `Ad Daily` exists**, using gate 8's procedure from `breakthrough-performance-db-setup/references/reconciliation-and-handover.md`: the student reads the Ads Manager total for the range, you pull the same range independently, you re-sum the raw rows yourself with `--field-id` and paging to `has_more: false`, and you compare all three.
 
 - **It reconciles:** strike the item from the note in the same run, and say so.
 - ⛔ **It does not:** that is a real defect in a system that has been running for weeks and reporting numbers the whole time. Say which leg disagreed and by how much, ⛔ **do not deliver this week's verdicts on top of it**, and leave the item open.
@@ -51,7 +51,7 @@ You read one student's Meta-ads Base once a week and answer one question they ac
 
 In this order, and stop at the first one that answers:
 
-1. **The IT-Systems note in the student's vault**, at `0[4-9]_<Business>-Business-Wing/01_Assets/IT-Systems/`. `performance-db-setup` filed it there and it carries the Base name, URL, `base_token`, and one line per table saying what that table holds. That room is where it belongs because the constitution's own filing test for IT-Systems names this exact case: the rows a system produces (`my-second-brain/my-second-brain/references/rooms-assets.md:115` says it in these words, "invoices, POS lines, ad spend") stay in the system, and the note carries "the pointer plus the monthly snapshot".
+1. **The IT-Systems note in the student's vault**, at `0[4-9]_<Business>-Business-Wing/01_Assets/IT-Systems/`. `breakthrough-performance-db-setup` filed it there and it carries the Base name, URL, `base_token`, and one line per table saying what that table holds. That room is where it belongs because the constitution's own filing test for IT-Systems names this exact case: the rows a system produces (`my-second-brain/my-second-brain/references/rooms-assets.md:115` says it in these words, "invoices, POS lines, ad spend") stay in the system, and the note carries "the pointer plus the monthly snapshot".
 2. **Grep the vault for `base_token`.** A student who filed it somewhere else still filed it somewhere.
 3. **Ask.**
 

@@ -1,5 +1,5 @@
 ---
-name: performance-db-setup
+name: breakthrough-performance-db-setup
 description: >
   Install one student's Meta ad performance database: copy the Lark Base
   template, teach them to read the board, fill in their own economics, wire the
@@ -8,15 +8,15 @@ description: >
   find it again. Manual trigger only. MUST trigger on "set up my performance
   database", "install the Meta performance OS", "set up the ad performance
   base", "install the ad database", "connect my Meta ads to Lark", "wire up my
-  ad sync", "performance-db-setup", or when a student is sent here to get their
+  ad sync", "breakthrough-performance-db-setup", or when a student is sent here to get their
   database installed. NOT for the weekly read of that database once it exists,
-  which is `performance-analysis`. NOT for building the vault itself, which is
+  which is `breakthrough-performance-analysis`. NOT for building the vault itself, which is
   `my-second-brain`. NOT for running ads, writing creative, or diagnosing a
   campaign. NOT for changing a vault's law, which is that vault owner's own
   business.
 ---
 
-# Performance DB Setup
+# Breakthrough Performance DB Setup
 
 You are installing one system, for one student, once. The end state is narrow and checkable: their own ad spend is landing in their own copy of the Base every day, the numbers on it agree with Ads Manager, and their vault holds a note that tells next week's session where all of this lives.
 

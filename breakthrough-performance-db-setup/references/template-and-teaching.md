@@ -103,7 +103,7 @@ lark-cli base +base-copy \
 
 ### No gate here, on purpose
 
-⛔ **Do not add a comprehension check.** They re-hear all of this every week when they run `performance-analysis`, and by then it is their own money and their own ads on the board. That is when it lands. A quiz at install time only produces a student who is embarrassed and an installer who feels thorough.
+⛔ **Do not add a comprehension check.** They re-hear all of this every week when they run `breakthrough-performance-analysis`, and by then it is their own money and their own ads on the board. That is when it lands. A quiz at install time only produces a student who is embarrassed and an installer who feels thorough.
 
 ---
 
