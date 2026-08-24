@@ -50,7 +50,7 @@ lark-cli base +base-copy \
 
 1. ⛔ **The student's identity, never the owner's.** The API creates the new Base under whoever's token called it, and there is no parameter that redirects it. The verified direction is the student's own CLI taking a copy of the owner's template; the reverse, pushing a copy into someone else's Drive, cannot be expressed at all.
 2. ⛔ **Gate 0 first.** If the CLI channel is not proven, do not attempt the copy and do not retry around the failure. Gate 0 is the fix, or the stop.
-3. ⛔ **Read the returned token back with `+base-get` and run changing-the-base.md §0 against it.** `ok: true` is not evidence that a Base exists at the other end of it.
+3. ⛔ **Read the returned token back with `+base-get` and run changing-the-base.md §0 against it.** `ok: true` is not evidence that a Base exists at the other end of it. ⚠️ **A read in the first seconds after the copy returns can come back as something other than a normal envelope, measured 2026-08-24, and that is the copy still settling rather than a copy that failed.** Wait and read it again before you decide. ⛔ **Deciding too early is how this ends in two copies:** the read looks like a failure, condition 5 hands them the link, they click, and the Base the call already made is still sitting there.
 4. **Give `--name` something that names this student.** ⛔ Never accept the default. This is the whole defence against the failure in the next paragraph.
 5. **Keep the manual path.** If the call fails after gate 0 passed, hand them the link, let them click, and rejoin at the pass test below. ⛔ Do not loop the CLI.
 
