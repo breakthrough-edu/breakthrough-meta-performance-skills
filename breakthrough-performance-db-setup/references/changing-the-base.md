@@ -194,6 +194,8 @@ STAGE 2, the missing parents, then the refresh
   SetRecord     Account, sync-last-run = now               <- the gate's own stamp, and it is last
 ```
 
+⚠️ **Grade the diagram: its Lark half is measured and its Meta half is not.** Every step above was read back off the template on 2026-08-24, and the gate, the loops and the link-state upsert were measured on a throwaway copy whose step list was byte-identical apart from its trigger and its two request URLs. ⛔ **Both HTTP steps were pointed at a stand-in endpoint for that measurement**, so nothing here has been run against Meta. And the second of the two (the ads endpoint, for status) had its URL, its requested status field and its expected reply shape composed from Meta's documentation rather than measured. ⇒ **A run that finishes clean and leaves the ad layer's status column blank points at that step before it points at the Base.** What would settle it: one live call to that endpoint with a real token, and the response recorded.
+
 ⛔ **The gate governs stage 1 only, and the two stages are protected by two different mechanisms.** Stage 2 does not repeat itself because of the gate. It does not repeat itself because **an ad whose row already exists has already had its link filled**, so it never comes back out of the empty-link find. ⚠️ **Conflating the two is how a migration breaks one while testing the other**, and the break is silent in both directions.
 
 ⛔ **`Account.sync-last-run` is what the gate asks about**, not the daily row key. `<ad-id>__<YYYY-MM-DD>` is still the key every rollup joins on; it is no longer the key the gate reads.
@@ -241,7 +243,7 @@ so the entire system runs on text keys, which are the one thing any sync can rel
 
 ## 6. Provenance, and what wins
 
-Every fact in this file was **measured on the author's own Lark tenant on 2026-08-22, 2026-08-23 and 2026-08-24**, on the Base this template was built from. They are measurements, not readings of documentation. That distinction matters here: Lark's documented behaviour and its actual behaviour diverge often enough that a documented claim and a measured one are not the same grade of fact, and this file carries only the measured grade.
+Every fact in this file was **measured on the author's own Lark tenant on 2026-08-22, 2026-08-23 and 2026-08-24**, on the Base this template was built from. They are measurements, not readings of documentation. That distinction matters here: Lark's documented behaviour and its actual behaviour diverge often enough that a documented claim and a measured one are not the same grade of fact, and this file carries the measured grade except where a line marks itself otherwise. ⚠️ **§5 carries one such mark**: the sync's two Meta requests, composed from Meta's documentation and never run. It sits beside the diagram it qualifies rather than here, because a grade kept away from the fact it grades is a grade nobody reads.
 
 ⭐ **A contradicting observation on the student's own account wins.** If you run one of these procedures and the Base does something else, the Base is right and this file is stale.
 
