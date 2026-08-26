@@ -1,16 +1,11 @@
 ---
 name: breakthrough-performance-db-setup
 description: >
-  Install one student's Meta ad performance database: copy the template Lark
-  Base, wire the daily sync to their own Meta token, reconcile it against Ads
-  Manager, and leave a pointer note in their vault so the weekly analysis can
-  find it again. MANUAL TRIGGER ONLY: invoke when the student explicitly asks
-  for the install ("set up my performance database", "connect my Meta ads to
-  Lark", "帮我装 performance database", "把我的 Meta 广告接到 Lark",
-  "breakthrough-performance-db-setup"), or when a student is sent here because
-  no Base exists yet. NOT for the weekly read of that database once it exists,
-  which is `breakthrough-performance-analysis`. NOT for building the vault
-  itself, which is `my-second-brain`.
+  One-time install of your Meta ad performance database: copy the template
+  Lark Base, wire the daily sync to your own Meta token, reconcile it against
+  Ads Manager, and leave a pointer note in your vault. The weekly read of the
+  installed Base is /breakthrough-performance-analysis.
+disable-model-invocation: true
 ---
 
 # Breakthrough Performance DB Setup

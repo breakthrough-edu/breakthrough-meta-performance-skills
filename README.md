@@ -25,7 +25,7 @@ One command installs both. The `-g` installs them for your user; without it they
 
 Each skill's `SKILL.md` sits inside its own `<skill-name>/` subdirectory, which is what lets `npx skills add` find both of them, and why the repo root holds two folders and this file rather than a `SKILL.md`.
 
-**Both are manual-trigger only.** Neither fires on its own. The student asks for it by name.
+**Both are hard-gated manual skills** (`disable-model-invocation: true`): the model cannot fire them and natural phrasing will not reach them. The student invokes each by its slash command, `/breakthrough-performance-db-setup` to install, `/breakthrough-performance-analysis` for the weekly read.
 
 ## The skills promise nothing
 
