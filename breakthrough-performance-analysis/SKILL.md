@@ -1,16 +1,14 @@
 ---
 name: breakthrough-performance-analysis
 description: >
-  Read a student's Meta-ads performance Base and tell them in plain language
-  whose problem this week's numbers are: the ads, the content, the technical
-  handoff, marketing, sales, execution, or the business model itself. Runs five
-  opening checks first and refuses to advise when any of them fails.
-  MANUAL TRIGGER ONLY: invoke when the student explicitly asks for it, in words
-  like "run my performance analysis", "look at my ads this week", "跑一次成效分析",
-  "看一下这週的广告". Do not invoke it because ads, Meta, or the Base were merely
-  mentioned. NOT for installing anything: copying the template Base, filling
-  Targets, clearing demo data, getting a Meta token, or wiring the sync workflow
-  all belong to breakthrough-performance-db-setup.
+  Read a student's Meta-ads performance Base and name in plain language whose
+  problem this week's numbers are, refusing to advise when an opening check
+  fails. MANUAL TRIGGER ONLY: invoke when the student explicitly asks for the
+  weekly read, in words like "run my performance analysis", "look at my ads
+  this week", "跑一次成效分析", "看一下这周的广告". Do not invoke it because
+  ads, Meta, or the Base were merely mentioned. NOT for installing anything:
+  copying the template Base, tokens, and sync wiring all belong to
+  breakthrough-performance-db-setup.
 ---
 
 # Breakthrough Performance Analysis
